@@ -5,22 +5,6 @@ int stack_size(t_stack *stack)
     return (stack->size);
 }
 
-void destroy_stack(t_stack *stack)
-{
-    t_node *current;
-    t_node *next;
-
-    if (!stack)
-        return;
-    current = stack->top;
-    while (current)
-    {
-        next = current->next;
-        free(current);
-        current = next;
-    }
-    free(stack);
-}
 
 void print_stack(t_stack *stack, char name)
 {

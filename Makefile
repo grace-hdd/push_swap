@@ -14,7 +14,8 @@ NAME = push_swap
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -I includes
+INCLUDES = -I includes -I libft
+LDFLAGS = -L libft -lft
 
 SRCDIR = src
 OBJDIR = obj
@@ -32,18 +33,19 @@ SOURCES = main.c \
 		  parsing/validate_input.c \
 		  utils/error_handling.c \
 		  utils/print_operations.c \
-		  utils/ft_printf.c \
-		  utils/ft_atoi.c \
 		  algorithm/algorithm_utils.c \
 		  algorithm/sort_large.c \
 		  algorithm/sort_small.c
 
 OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
 
-all: $(NAME)
+all: libft $(NAME)
+
+libft:
+	@make -C libft
 
 $(NAME): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
