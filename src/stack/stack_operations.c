@@ -1,4 +1,4 @@
-#include "../../includes/push_swap.h"
+#include "../includes/push_swap.h"
 
 int push(t_stack *stack, int value)
 {
@@ -38,4 +38,21 @@ int peek(t_stack *stack)
 int is_empty(t_stack *stack)
 {
     return (stack->top == NULL);
+}
+
+void destroy_stack(t_stack *stack)
+{
+    t_node *current;
+    t_node *next;
+
+    if (!stack)
+        return;
+    current = stack->top;
+    while (current)
+    {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    free(stack);
 }

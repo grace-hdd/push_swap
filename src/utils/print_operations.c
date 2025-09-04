@@ -1,4 +1,4 @@
-#include "../../includes/push_swap.h"
+#include "../includes/push_swap.h"
 
 void print_operation(const char *operation)
 {

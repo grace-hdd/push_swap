@@ -31,11 +31,17 @@ SOURCES = main.c \
 		  parsing/parsing_input.c \
 		  parsing/validate_input.c \
 		  utils/error_handling.c \
-		  utils/print_operations.c
+		  utils/print_operations.c \
+		  utils/ft_printf.c \
+		  utils/ft_atoi.c \
+		  algorithm/algorithm_utils.c \
+		  algorithm/sort_large.c \
+		  algorithm/sort_small.c
 
 OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
 
 all: $(NAME)
+
 $(NAME): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME)
 

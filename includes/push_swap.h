@@ -1,8 +1,8 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-// # include <stdio.h>
-// # include <limits.h>
+# include <stdio.h>
+# include <limits.h>
 # include <unistd.h>
 # include <stdlib.h>
 
@@ -49,5 +49,7 @@ void    cleanup_and_exit(t_stack *stack_a, t_stack *stack_b);
 int     validate_stack(t_stack *stack);
 void    print_operation(const char *operation);
 void    print_operations_list(char **operations, int count);
+int     ft_atoi(const char *str);
+int     ft_printf(const char *format, ...);
 
 #endif

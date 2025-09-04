@@ -1,4 +1,4 @@
-#include "../../includes/push_swap.h"
+#include "../includes/push_swap.h"
 
 int *parse_input(int argc, char **argv, int *count)
 {
