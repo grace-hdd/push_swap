@@ -8,6 +8,7 @@ void pa(t_stack *stack_a, t_stack *stack_b)
         return;
     value = pop(stack_b);
     push(stack_a, value);
+    ft_printf("pa\n");
 }
 
 void pb(t_stack *stack_a, t_stack *stack_b)
@@ -18,4 +19,5 @@ void pb(t_stack *stack_a, t_stack *stack_b)
         return;
     value = pop(stack_a);
     push(stack_b, value);
+    ft_printf("pb\n");
 }

@@ -1,117 +1,99 @@
-#include "../includes/push_swap.h"
+#include "../../includes/push_swap.h"
 
-void	sort_large(t_stack *stack_a, t_stack *stack_b)
+static int get_chunk_size(t_stack *stack)
 {
-	int	median;
-	int	chunk_size;
-	int	chunk_count;
-	int	i;
+    int size;
 
-	if (is_sorted(stack_a))
-		return ;
-	chunk_size = get_optimal_chunk_size(stack_a->size);
-	chunk_count = (stack_a->size + chunk_size - 1) / chunk_size;
-	i = 0;
-	while (i < chunk_count)
-	{
-		median = get_median(stack_a);
-		push_chunk_to_b(stack_a, stack_b, median, chunk_size);
-		i++;
-	}
-	sort_stack_b(stack_a, stack_b);
+    size = stack->size;
+    if (size <= 100)
+        return (15);
+    else if (size <= 200)
+        return (25);
+    else if (size <= 300)
+        return (35);
+    else if (size <= 400)
+        return (45);
+    else
+        return (50);
 }
 
-int	get_optimal_chunk_size(int stack_size)
+static int find_best_number(t_stack *stack_a, t_stack *stack_b)
 {
-	if (stack_size <= 100)
-		return (15);
-	else if (stack_size <= 500)
-		return (30);
-	else
-		return (50);
+    t_node *current;
+    int best_num;
+    int best_pos;
+    int pos;
+
+    current = stack_a->top;
+    best_num = current->value;
+    best_pos = 0;
+    pos = 0;
+    while (current)
+    {
+        if (current->value < best_num)
+        {
+            best_num = current->value;
+            best_pos = pos;
+        }
+        current = current->next;
+        pos++;
+    }
+    return (best_pos);
 }
 
-void	push_chunk_to_b(t_stack *stack_a, t_stack *stack_b, int median, int chunk_size)
+static void push_to_b(t_stack *stack_a, t_stack *stack_b, int chunk_size)
 {
-	int	pushed;
-	int	operations;
+    int pushed;
+    int best_pos;
 
-	pushed = 0;
-	while (pushed < chunk_size && stack_a->size > 0)
-	{
-		if (stack_a->top->value <= median)
-		{
-			pb(stack_a, stack_b);
-			pushed++;
-		}
-		else
-		{
-			operations = find_best_rotation(stack_a, median);
-			execute_rotations(stack_a, operations);
-		}
-	}
+    pushed = 0;
+    while (pushed < chunk_size && stack_a->size > 3)
+    {
+        best_pos = find_best_number(stack_a, stack_b);
+        if (best_pos <= stack_a->size / 2)
+        {
+            while (best_pos-- > 0)
+                ra(stack_a);
+        }
+        else
+        {
+            while (best_pos++ < stack_a->size)
+                rra(stack_a);
+        }
+        pb(stack_a, stack_b);
+        pushed++;
+    }
 }
 
-int	find_best_rotation(t_stack *stack, int median)
+static void push_back_to_a(t_stack *stack_a, t_stack *stack_b)
 {
-	t_node	*current;
-	int		ra_count;
-	int		rra_count;
-	int		position;
+    int best_pos;
 
-	current = stack->top;
-	ra_count = 0;
-	while (current)
-	{
-		if (current->value <= median)
-			break ;
-		current = current->next;
-		ra_count++;
-	}
-	if (!current)
-		return (0);
-	position = ra_count;
-	rra_count = stack->size - position;
-	if (ra_count <= rra_count)
-		return (ra_count);
-	else
-		return (-rra_count);
+    while (stack_b->size > 0)
+    {
+        best_pos = find_best_number(stack_a, stack_b);
+        if (best_pos <= stack_a->size / 2)
+        {
+            while (best_pos-- > 0)
+                ra(stack_a);
+        }
+        else
+        {
+            while (best_pos++ < stack_a->size)
+                rra(stack_a);
+        }
+        pa(stack_a, stack_b);
+    }
 }
 
-void	execute_rotations(t_stack *stack, int operations)
+void sort_large(t_stack *stack_a, t_stack *stack_b)
 {
-	int	i;
+    int chunk_size;
 
-	if (operations > 0)
-	{
-		i = 0;
-		while (i < operations)
-		{
-			ra(stack);
-			i++;
-		}
-	}
-	else if (operations < 0)
-	{
-		i = 0;
-		while (i < -operations)
-		{
-			rra(stack);
-			i++;
-		}
-	}
-}
-
-void	sort_stack_b(t_stack *stack_a, t_stack *stack_b)
-{
-	int	max;
-	int	operations;
-
-	while (stack_b->size > 0)
-	{
-		max = find_max(stack_b);
-		operations = find_best_rotation(stack_b, max);
-		execute_rotations(stack_b, operations);
-		pa(stack_a, stack_b);
-	}
+    if (is_sorted(stack_a))
+        return;
+    chunk_size = get_chunk_size(stack_a);
+    push_to_b(stack_a, stack_b, chunk_size);
+    sort_three(stack_a);
+    push_back_to_a(stack_a, stack_b);
 }
