@@ -141,7 +141,8 @@ push_swap/
 ├── src/
 │   ├── main.c               # Entry point
 │   ├── algorithm/
-│   │   ├── sort_small.c     # 3 & 5 element sorting
+│   │   ├── sort_small.c     # 3 element sorting
+│   │   ├── sort_five.c      # 4-5 element sorting
 │   │   ├── sort_large.c     # Large stack algorithm
 │   │   └── algorithm_utils.c # Helper functions
 │   ├── operations/
