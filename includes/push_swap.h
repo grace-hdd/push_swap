@@ -50,14 +50,6 @@ int		find_min(t_stack *stack);
 int		find_max(t_stack *stack);
 int		get_position(t_stack *stack, int value);
 int		get_median(t_stack *stack);
-int		get_value_at_position(t_stack *stack, int position);
-int		count_operations_to_top(t_stack *stack, int value);
-
-int		get_optimal_chunk_size(int stack_size);
-void	push_chunk_to_b(t_stack *stack_a, t_stack *stack_b, int median, int chunk_size);
-int		find_best_rotation(t_stack *stack, int median);
-void	execute_rotations(t_stack *stack, int operations);
-void	sort_stack_b(t_stack *stack_a, t_stack *stack_b);
 
 void	print_error(void);
 void	cleanup_and_exit(t_stack *stack_a, t_stack *stack_b);

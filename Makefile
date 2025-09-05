@@ -20,7 +20,6 @@ SOURCES = src/main.c \
 		  src/utils/error_handling.c \
 		  src/utils/print_operations.c \
 		  src/algorithm/sort_small.c \
-		  src/algorithm/sort_five.c \
 		  src/algorithm/sort_large.c \
 		  src/algorithm/algorithm_utils.c
 
