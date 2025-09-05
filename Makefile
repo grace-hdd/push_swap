@@ -1,62 +1,49 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/01/01 00:00:00 by user              #+#    #+#              #
-#    Updated: 2024/01/01 00:00:00 by user             ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = push_swap
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -I includes -I libft
-LDFLAGS = -L libft -lft
+LIBFT = libft/libft.a
 
 SRCDIR = src
-OBJDIR = obj
-INCDIR = includes
 
-SOURCES = main.c \
-		  stack/stack_operations.c \
-		  stack/stack_utils.c \
-		  stack/stack_init.c \
-		  operations/swap.c \
-		  operations/push.c \
-		  operations/rotate.c \
-		  operations/reverse_rotate.c \
-		  parsing/parsing_input.c \
-		  parsing/validate_input.c \
-		  utils/error_handling.c \
-		  utils/print_operations.c \
-		  algorithm/algorithm_utils.c \
-		  algorithm/sort_large.c \
-		  algorithm/sort_small.c
+SOURCES = src/main.c \
+		  src/stack/stack_operations.c \
+		  src/stack/stack_utils.c \
+		  src/stack/stack_init.c \
+		  src/operations/swap.c \
+		  src/operations/push.c \
+		  src/operations/rotate.c \
+		  src/operations/reverse_rotate.c \
+		  src/parsing/parsing_input.c \
+		  src/parsing/validate_input.c \
+		  src/utils/error_handling.c \
+		  src/utils/print_operations.c \
+		  src/algorithm/sort_small.c \
+		  src/algorithm/sort_large.c \
+		  src/algorithm/algorithm_utils.c
 
-OBJECTS = $(SOURCES:%.c=$(OBJDIR)/%.o)
+OBJECTS = $(SOURCES:.c=.o)
 
-all: libft $(NAME)
+all: $(NAME)
 
-libft:
-	@make -C libft
+$(NAME): $(OBJECTS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(NAME)
 
-$(NAME): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME)
+$(LIBFT):
+	make -C libft
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(dir $@)
+%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -rf $(OBJDIR)
+	rm -f *.o
+	make -C libft clean
 
 fclean: clean
 	rm -f $(NAME)
+	make -C libft fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re test test1 test2 test3
+.PHONY: all clean fclean re
