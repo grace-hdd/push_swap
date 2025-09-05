@@ -16,6 +16,7 @@ int	is_sorted(t_stack *stack)
 	return (1);
 }
 
+
 void	sort_three(t_stack *stack)
 {
 	int	first;
