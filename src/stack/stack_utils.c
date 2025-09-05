@@ -5,7 +5,6 @@ int stack_size(t_stack *stack)
     return (stack->size);
 }
 
-
 void print_stack(t_stack *stack, char name)
 {
     t_node *current;
