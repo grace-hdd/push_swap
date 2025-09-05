@@ -12,12 +12,29 @@ t_stack *create_stack(void)
     return (stack);
 }
 
+static int populate_stack(t_stack *stack, int *numbers, int count)
+{
+    int i;
+
+    i = 0;
+    while (i < count)
+    {
+        if (!push(stack, numbers[i]))
+        {
+            free(numbers);
+            destroy_stack(stack);
+            return (0);
+        }
+        i++;
+    }
+    return (1);
+}
+
 t_stack *init_stack_a(int argc, char **argv)
 {
     int *numbers;
     int count;
     t_stack *stack;
-    int i;
 
     numbers = parse_input(argc, argv, &count);
     if (!numbers)
@@ -28,18 +45,13 @@ t_stack *init_stack_a(int argc, char **argv)
         return (NULL);
     }
     stack = create_stack();
-    i = 0;
-    while (i < count)
+    if (!stack)
     {
-        if (!push(stack, numbers[i]))
-        {
-            free(numbers);
-            destroy_stack(stack);
-            return (NULL);
-        }
-        i++;
+        free(numbers);
+        return (NULL);
     }
+    if (!populate_stack(stack, numbers, count))
+        return (NULL);
     free(numbers);
     return (stack);
-
 }
