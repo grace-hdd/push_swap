@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   stack_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,45 @@
 
 #include "push_swap.h"
 
-void	print_error(void)
+t_node	*pop_bottom(t_stack *stack)
 {
-	write(2, "Error\n", 6);
+	t_node	*bottom;
+	t_node	*current;
+
+	if (!stack || !stack->top)
+		return (NULL);
+	if (stack->size == 1)
+	{
+		bottom = stack->top;
+		stack->top = NULL;
+		stack->bottom = NULL;
+	}
+	else
+	{
+		current = stack->top;
+		while (current->next->next)
+			current = current->next;
+		bottom = current->next;
+		current->next = NULL;
+		stack->bottom = current;
+	}
+	stack->size--;
+	return (bottom);
 }
 
-int	has_duplicates(int *arr, int size)
+void	free_stack(t_stack *stack)
 {
-	int	i;
-	int	j;
+	t_node	*current;
+	t_node	*next;
 
-	i = 0;
-	while (i < size - 1)
+	if (!stack)
+		return ;
+	current = stack->top;
+	while (current)
 	{
-		j = i + 1;
-		while (j < size)
-		{
-			if (arr[i] == arr[j])
-				return (1);
-			j++;
-		}
-		i++;
+		next = current->next;
+		free(current);
+		current = next;
 	}
-	return (0);
+	free(stack);
 }

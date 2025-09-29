@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,54 @@
 
 #include "push_swap.h"
 
-void	print_error(void)
+long	ft_atol(const char *str)
 {
-	write(2, "Error\n", 6);
+	long	sign;
+	long	result;
+
+	sign = 1;
+	result = 0;
+	while ((*str >= 9 && *str <= 13) || *str == ' ')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	return (result * sign);
 }
 
-int	has_duplicates(int *arr, int size)
+void	free_split(char **split)
 {
-	int	i;
 	int	j;
 
-	i = 0;
-	while (i < size - 1)
+	if (!split)
+		return ;
+	j = 0;
+	while (split[j])
 	{
-		j = i + 1;
-		while (j < size)
-		{
-			if (arr[i] == arr[j])
-				return (1);
-			j++;
-		}
-		i++;
+		free(split[j]);
+		j++;
 	}
-	return (0);
+	free(split);
+}
+
+int	process_split_number(char *str, int **numbers, int *k)
+{
+	long	num;
+
+	if (!is_number(str))
+		return (0);
+	num = ft_atol(str);
+	if (num > 2147483647 || num < -2147483648)
+		return (0);
+	(*numbers)[*k] = (int)num;
+	(*k)++;
+	return (1);
 }

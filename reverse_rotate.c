@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   reverse_rotate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,37 @@
 
 #include "push_swap.h"
 
-void	print_error(void)
+static void	reverse_rotate_stack(t_stack *stack)
 {
-	write(2, "Error\n", 6);
+	t_node	*last;
+
+	if (!stack || stack->size < 2)
+		return ;
+	last = pop_bottom(stack);
+	push_top(stack, last);
 }
 
-int	has_duplicates(int *arr, int size)
+void	rra(t_stack *a)
 {
-	int	i;
-	int	j;
+	if (!a)
+		return ;
+	reverse_rotate_stack(a);
+	write(1, "rra\n", 4);
+}
 
-	i = 0;
-	while (i < size - 1)
-	{
-		j = i + 1;
-		while (j < size)
-		{
-			if (arr[i] == arr[j])
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
+void	rrb(t_stack *b)
+{
+	if (!b)
+		return ;
+	reverse_rotate_stack(b);
+	write(1, "rrb\n", 4);
+}
+
+void	rrr(t_stack *a, t_stack *b)
+{
+	if (!a || !b)
+		return ;
+	reverse_rotate_stack(a);
+	reverse_rotate_stack(b);
+	write(1, "rrr\n", 4);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,24 @@
 
 #include "push_swap.h"
 
-void	print_error(void)
+void	pa(t_stack *a, t_stack *b)
 {
-	write(2, "Error\n", 6);
+	t_node	*node;
+
+	if (!a || !b || b->size == 0)
+		return ;
+	node = pop_top(b);
+	push_top(a, node);
+	write(1, "pa\n", 3);
 }
 
-int	has_duplicates(int *arr, int size)
+void	pb(t_stack *a, t_stack *b)
 {
-	int	i;
-	int	j;
+	t_node	*node;
 
-	i = 0;
-	while (i < size - 1)
-	{
-		j = i + 1;
-		while (j < size)
-		{
-			if (arr[i] == arr[j])
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
+	if (!a || !b || a->size == 0)
+		return ;
+	node = pop_top(a);
+	push_top(b, node);
+	write(1, "pb\n", 3);
 }

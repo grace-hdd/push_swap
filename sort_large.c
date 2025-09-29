@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   sort_large.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grhaddad <grhaddad@student.42beirut.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,49 @@
 
 #include "push_swap.h"
 
-void	print_error(void)
+static void	process_chunk(t_stack *a, t_stack *b, int range, int *chunk)
 {
-	write(2, "Error\n", 6);
+	int	pos;
+
+	pos = get_min_pos(a);
+	if (a->top->value <= *chunk * range)
+	{
+		pb(a, b);
+		*chunk = (b->size - 1) / range + 1;
+	}
+	else if (pos <= a->size / 2)
+		ra(a);
+	else
+		rra(a);
 }
 
-int	has_duplicates(int *arr, int size)
+void	sort_turk(t_stack *a, t_stack *b)
 {
-	int	i;
-	int	j;
+	int	size;
+	int	chunk;
+	int	range;
 
-	i = 0;
-	while (i < size - 1)
-	{
-		j = i + 1;
-		while (j < size)
-		{
-			if (arr[i] == arr[j])
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
+	if (!a || !b || is_sorted(a))
+		return ;
+	size = a->size;
+	chunk = 0;
+	if (size <= 100)
+		range = size / 3;
+	else
+		range = size / 8;
+	while (a->size > 3)
+		process_chunk(a, b, range, &chunk);
+	sort_three(a);
+	while (b->size > 0)
+		pa(a, b);
+}
+
+void	push_swap(t_stack *a, t_stack *b)
+{
+	if (!a || a->size <= 1 || is_sorted(a))
+		return ;
+	if (a->size <= 5)
+		sort_small(a, b);
+	else
+		sort_turk(a, b);
 }

@@ -1,7 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grhaddad <grhaddad@student.42beirut.com>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/29 17:39:42 by grhaddad          #+#    #+#           */
+/*   Updated: 2025/09/29 17:39:42 by grhaddad         ###   ########.fr     */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-static int is_number(char *str)
+int	is_number(char *str)
 {
+	if (!str || !*str)
+		return (0);
 	if (*str == '+' || *str == '-')
 		str++;
 	if (!*str)
@@ -15,35 +29,30 @@ static int is_number(char *str)
 	return (1);
 }
 
-long ft_atol(const char *str)
+static void	free_and_count(char **split, int *count)
 {
-	long sign;
-	long result;
+	int	j;
 
-	sign = 1;
-	result = 0;
-	while ((*str >= 9 && *str <= 13) || *str == ' ')
-		str++;
-	if (*str == '-' || str == '+')
+	j = 0;
+	while (split[j])
 	{
-		if (*str == '-')
-			sign = -1;
-		str++;
+		(*count)++;
+		j++;
 	}
-	while (*str >= '0' && *str <= '9')
+	j = 0;
+	while (split[j])
 	{
-		result = result * 10 + (*str - '0');
-		str++;
+		free(split[j]);
+		j++;
 	}
-	return (result * sign);
+	free(split);
 }
 
-int parse_args(int ac, char **av)
+static int	count_numbers(int ac, char **av)
 {
-	char **split;
-	int i;
-	int j;
-	int count;
+	char	**split;
+	int		i;
+	int		count;
 
 	count = 0;
 	i = 1;
@@ -52,15 +61,54 @@ int parse_args(int ac, char **av)
 		split = ft_split(av[i], ' ');
 		if (!split)
 			return (-1);
-		j = 0;
-		while (split[j]);
-		{
-			count++;
-			free(split[j]);
-			j++;
-		}
-		free(split);
+		free_and_count(split, &count);
 		i++;
 	}
 	return (count);
+}
+
+static int	process_argument(char *arg, int **numbers, int *k)
+{
+	char	**split;
+	int		j;
+
+	split = ft_split(arg, ' ');
+	if (!split)
+		return (0);
+	j = 0;
+	while (split[j])
+	{
+		if (!process_split_number(split[j], numbers, k))
+		{
+			free_split(split);
+			return (0);
+		}
+		j++;
+	}
+	free_split(split);
+	return (1);
+}
+
+int	parse_args(int ac, char **av, int **numbers, int *count)
+{
+	int		i;
+	int		k;
+
+	*count = count_numbers(ac, av);
+	if (*count <= 0)
+		return (0);
+	*numbers = malloc(sizeof(int) * (*count));
+	if (!*numbers)
+		return (0);
+	k = 0;
+	i = 1;
+	while (i < ac)
+	{
+		if (!process_argument(av[i], numbers, &k))
+			return (0);
+		i++;
+	}
+	if (has_duplicates(*numbers, *count))
+		return (0);
+	return (1);
 }
