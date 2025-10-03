@@ -12,25 +12,26 @@
 
 #include "push_swap.h"
 
-static void	index_numbers(int *numbers, int count)
+static void	assign_indices_to_stack(t_stack *stack, int *numbers, int count)
 {
-	int	i;
-	int	j;
-	int	rank;
+	t_node	*current;
+	int		i;
+	int		j;
+	int		rank;
 
-	i = 0;
-	while (i < count)
+	current = stack->top;
+	while (current)
 	{
 		rank = 0;
 		j = 0;
 		while (j < count)
 		{
-			if (numbers[j] < numbers[i])
+			if (numbers[j] < current->value)
 				rank++;
 			j++;
 		}
-		numbers[i] = rank;
-		i++;
+		current->index = rank;
+		current = current->next;
 	}
 }
 
@@ -52,10 +53,10 @@ static t_stack	*create_stack_from_array(int *numbers, int count)
 			free_stack(stack);
 			return (NULL);
 		}
-		node->index = numbers[i];
 		push_bottom(stack, node);
 		i++;
 	}
+	assign_indices_to_stack(stack, numbers, count);
 	return (stack);
 }
 
@@ -73,7 +74,6 @@ int	main(int argc, char **argv)
 		print_error();
 		return (1);
 	}
-	index_numbers(numbers, count);
 	a = create_stack_from_array(numbers, count);
 	b = init_stack();
 	if (!a || !b)

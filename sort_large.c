@@ -17,7 +17,7 @@ static void	process_chunk(t_stack *a, t_stack *b, int range, int *chunk)
 	int	pos;
 
 	pos = get_min_pos(a);
-	if (a->top->value <= *chunk * range)
+	if (a->top->index <= *chunk * range)
 	{
 		pb(a, b);
 		*chunk = (b->size - 1) / range + 1;

@@ -33,6 +33,7 @@ t_node	*create_node(int value)
 	if (!node)
 		return (NULL);
 	node->value = value;
+	node->index = 0;
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);
