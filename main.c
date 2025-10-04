@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-static void	index_numbers(int *numbers, int count)
+static void	create_value_index_map(int *numbers, int count)
 {
 	int	i;
 	int	j;
@@ -73,7 +73,7 @@ int	main(int argc, char **argv)
 		print_error();
 		return (1);
 	}
-	index_numbers(numbers, count);
+	create_value_index_map(numbers, count);
 	a = create_stack_from_array(numbers, count);
 	b = init_stack();
 	if (!a || !b)

@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror
 SRC = main.c \
 	error.c \
 	parsing.c \
-	parsing_utils.c \
+	validation.c \
 	utils.c \
 	stack.c \
 	stack_utils.c \
@@ -15,7 +15,10 @@ SRC = main.c \
 	reverse_rotate.c \
 	sort_large.c \
 	sort_utils.c \
-	sort_small.c
+	sort_small.c \
+	helpers.c \
+	cost.c \
+	target.c
 
 OBJS = $(SRC:.c=.o)
 

@@ -69,3 +69,39 @@ void	push_min_to_b(t_stack *a, t_stack *b, int *size)
 	pb(a, b);
 	(*size)--;
 }
+
+int	get_max_pos(t_stack *stack)
+{
+	t_node	*current;
+	int		max;
+	int		pos;
+	int		max_pos;
+
+	if (!stack || !stack->top)
+		return (-1);
+	current = stack->top;
+	max = current->value;
+	pos = 0;
+	max_pos = 0;
+	while (current)
+	{
+		if (current->value > max)
+		{
+			max = current->value;
+			max_pos = pos;
+		}
+		pos++;
+		current = current->next;
+	}
+	return (max_pos);
+}
+
+void	rotate_to_pos_b(t_stack *stack, int pos)
+{
+	if (pos <= stack->size / 2)
+		while (pos-- > 0)
+			rb(stack);
+	else
+		while (pos++ < stack->size)
+			rrb(stack);
+}

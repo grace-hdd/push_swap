@@ -12,41 +12,30 @@
 
 #include "push_swap.h"
 
-static void	process_chunk(t_stack *a, t_stack *b, int range, int *chunk)
+static void	sort_large_array(t_stack *a, t_stack *b)
 {
-	int	pos;
-
-	pos = get_min_pos(a);
-	if (a->top->value <= *chunk * range)
+	push_all_but_three(a, b);
+	sort_three(a);
+	while (b->size > 0)
 	{
-		pb(a, b);
-		*chunk = (b->size - 1) / range + 1;
+		get_target_position(a, b);
+		get_cost(a, b);
+		do_cheapest_move(a, b);
 	}
-	else if (pos <= a->size / 2)
-		ra(a);
-	else
-		rra(a);
+	if (!is_sorted(a))
+		shift_stack(a, 'a');
 }
 
 void	sort_turk(t_stack *a, t_stack *b)
 {
-	int	size;
-	int	chunk;
-	int	range;
-
 	if (!a || !b || is_sorted(a))
 		return ;
-	size = a->size;
-	chunk = 0;
-	if (size <= 100)
-		range = size / 3;
+	if (a->size == 2)
+		sa(a);
+	else if (a->size == 3)
+		sort_three(a);
 	else
-		range = size / 8;
-	while (a->size > 3)
-		process_chunk(a, b, range, &chunk);
-	sort_three(a);
-	while (b->size > 0)
-		pa(a, b);
+		sort_large_array(a, b);
 }
 
 void	push_swap(t_stack *a, t_stack *b)
