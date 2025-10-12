@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-static void	create_value_index_map(int *numbers, int count)
+static void	calculate_ranks(int *numbers, int *temp, int count)
 {
 	int	i;
 	int	j;
@@ -29,9 +29,38 @@ static void	create_value_index_map(int *numbers, int count)
 				rank++;
 			j++;
 		}
-		numbers[i] = rank;
+		temp[i] = rank;
 		i++;
 	}
+}
+
+static void	create_value_index_map(int *numbers, int count)
+{
+	int	i;
+	int	*temp;
+
+	temp = malloc(sizeof(int) * count);
+	if (!temp)
+		return ;
+	calculate_ranks(numbers, temp, count);
+	i = 0;
+	while (i < count)
+	{
+		numbers[i] = temp[i];
+		i++;
+	}
+	free(temp);
+}
+
+static t_node	*create_and_setup_node(int value)
+{
+	t_node	*node;
+
+	node = create_node(value);
+	if (!node)
+		return (NULL);
+	node->index = value;
+	return (node);
 }
 
 static t_stack	*create_stack_from_array(int *numbers, int count)
@@ -46,13 +75,12 @@ static t_stack	*create_stack_from_array(int *numbers, int count)
 	i = 0;
 	while (i < count)
 	{
-		node = create_node(numbers[i]);
+		node = create_and_setup_node(numbers[i]);
 		if (!node)
 		{
 			free_stack(stack);
 			return (NULL);
 		}
-		node->index = numbers[i];
 		push_bottom(stack, node);
 		i++;
 	}
