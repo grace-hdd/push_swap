@@ -6,7 +6,7 @@
 /*   By: grhaddad <grhaddad@student.42beirut.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 17:39:42 by grhaddad          #+#    #+#           */
-/*   Updated: 2025/09/29 17:39:42 by grhaddad         ###   ########.fr     */
+/*   Updated: 2025/10/21 14:17:48 by grhaddad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ static int	process_argument(char *arg, int **numbers, int *k)
 	j = 0;
 	while (split[j])
 	{
-		if (!process_split_number(split[j], numbers, k))
+		if (!process_split_number(split[j], numbers, k)
+			|| !is_valid_number(split[j]))
 		{
 			free_split(split);
 			return (0);
@@ -102,13 +103,17 @@ int	parse_args(int ac, char **av, int **numbers, int *count)
 		return (0);
 	k = 0;
 	i = 1;
-	while (i < ac)
-	{
-		if (!process_argument(av[i], numbers, &k))
-			return (0);
+	while (i < ac && process_argument(av[i], numbers, &k))
 		i++;
+	if (i < ac)
+	{
+		free(*numbers);
+		return (0);
 	}
 	if (has_duplicates(*numbers, *count))
+	{
+		free(*numbers);
 		return (0);
+	}
 	return (1);
 }

@@ -66,38 +66,18 @@ int	process_split_number(char *str, int **numbers, int *k)
 
 int	is_valid_number(char *str)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    if (str[i] == '-' || str[i] == '+')
-        i++;
-    if (!str[i])
-        return (0);
-    while (str[i])
-    {
-        if (str[i] < '0' || str[i] > '9')
-            return (0);
-        i++;
-    }
-    return (1);
-}
-
-int	is_duplicate(int *arr, int size)
-{
-    int	i;
-    int	j;
-
-    i = 0;
-    while (i < size)
-    {
-        j = i + 1;
-        while (j < size)
-        {
-            if (arr[i] == arr[j])
-                return (1);
-            j++;
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }

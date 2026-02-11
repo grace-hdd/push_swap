@@ -45,6 +45,7 @@ long	ft_atol(const char *str);
 void	free_split(char **split);
 int		process_split_number(char *str, int **numbers, int *k);
 int		is_number(char *str);
+int		is_valid_number(char *str);
 
 /* Stack operations */
 t_stack	*init_stack(void);
